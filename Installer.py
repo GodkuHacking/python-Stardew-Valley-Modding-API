@@ -1,5 +1,4 @@
 import os
-import sys
 import subprocess
 from colorama import init, Fore
 from tqdm import tqdm
@@ -8,7 +7,7 @@ from tqdm import tqdm
 init()
 
 # ASCII art for SMAPI
-ascii_art = """
+SMAPi_ASCII = """
 .-------.  ____     __  .-'''-. ,---.    ,---.   ____    .-------. .-./`)  
 \  _(`)_ \ \   \   /  // _     \|    \  /    | .'  __ `. \  _(`)_ \\ .-.') 
 | (_ o._)|  \  _. /  '(`' )/`--'|  ,  \/  ,  |/   '  \  \| (_ o._)|/ `-' \ 
@@ -20,49 +19,64 @@ ascii_art = """
 `---'     `-..-'       `-...-'  '--'      '--' '.(_,_).' `---'      '---'  
 """
 
-# Path to the directory where the script resides
-installer_dir = os.path.dirname(os.path.abspath(__file__))
+def print_error(message):
+    """Print error message in red color"""
+    print(Fore.RED + message)
 
-# Check if running from within a zip folder
-if 'TEMP' in installer_dir:
-    print(Fore.RED + "Oops! It looks like you're running the installer from inside a zip file. "
-                     "Please unzip the download first.")
-    input()
-    sys.exit()
+def print_success(message):
+    """Print success message in green color"""
+    print(Fore.GREEN + message)
 
-# Check if necessary files exist
-required_files = ["internal/windows/SMAPI.Installer.dll", "internal/windows/SMAPI.Installer.exe"]
-missing_files = [file for file in required_files if not os.path.exists(os.path.join(installer_dir, file))]
+def print_warning(message):
+    """Print warning message in yellow color"""
+    print(Fore.YELLOW + message)
 
-if missing_files:
-    print(Fore.RED + "Oops! SMAPI is missing some required files. Your antivirus might have deleted them.")
-    for file in missing_files:
-        print(Fore.RED + f"Missing file: {file}")
-    input()
-    sys.exit()
+def print_menu():
+    """Print menu text"""
+    print(Fore.MAGENTA + "=" * 55)
+    print(Fore.MAGENTA + "| {:^51} |".format("V1.0.1"))
+    print(Fore.MAGENTA + "| {:^51} |".format("Change Log:"))
+    print(Fore.MAGENTA + "| {:^51} |".format("Better Terminal UI"))
+    print(Fore.MAGENTA + "| {:^51} |".format(""))
+    print(Fore.MAGENTA + "=" * 55)
 
-# Display ASCII art
-print(Fore.MAGENTA + ascii_art)
+def run_installer(installer_exe_path):
+    """Run SMAPI installer"""
+    try:
+        subprocess.run([installer_exe_path], check=True)
+        print_success("SMAPI installed successfully!")
+    except subprocess.CalledProcessError:
+        print_error("Oops! The SMAPI installer encountered an error. Please check the logs for details.")
 
-# Start installer
-print(Fore.MAGENTA + "Initializing SMAPI installation...")
-with tqdm(total=100, desc="Progress", bar_format="{desc}: {percentage:.0f}% [{bar}]") as pbar:
-    # Simulating installation progress
-    for _ in range(100):
-        pbar.update(1)
+def main():
+    print_menu()
+    print(Fore.MAGENTA + SMAPi_ASCII)
+    print(Fore.MAGENTA + "Initializing SMAPI installation...")
+    
+    # Prompt user to press Enter to continue
+    input("Press Enter to begin the installation...")
 
-# Run installer
-installer_exe_path = os.path.join(installer_dir, "internal/windows/SMAPI.Installer.exe")
-try:
-    subprocess.run([installer_exe_path], check=True)
-    installation_success = True
-except subprocess.CalledProcessError:
-    installation_success = False
+    # Simulate installation progress
+    with tqdm(total=100, desc="Progress", bar_format="{desc}: {percentage:.0f}% [{bar}]") as pbar:
+        for _ in range(100):
+            pbar.update(1)
 
-# Check installation success
-if installation_success:
-    print(Fore.GREEN + "SMAPI installed successfully!")
-else:
-    print(Fore.RED + "Oops! The SMAPI installer encountered an error. Please check the logs for details.")
+    # Path to the directory where the script resides
+    installer_dir = os.path.dirname(os.path.abspath(__file__))
 
-input(Fore.YELLOW + "Press Enter to exit...")
+    # Path to the SMAPI installer
+    installer_exe_path = os.path.join(installer_dir, "internal/windows/SMAPI.Installer.exe")
+
+    # Check if installer exists
+    if not os.path.exists(installer_exe_path):
+        print_error("Oops! SMAPI installer is missing. Please check your installation files.")
+        return
+
+    run_installer(installer_exe_path)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print_warning("\nInstallation interrupted. Press Enter to exit...")
+        input()
