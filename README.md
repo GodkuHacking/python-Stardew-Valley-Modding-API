@@ -10,9 +10,14 @@ python Stardew Valley Modding API!
 
 
 
-### Changelogs
 # Changelog
 
 | Version | Changes |
 | ------- | ------- |
 | v1.0.0  | ✨ Compiled the exe [PySMAPI](https://github.com/mindsetpro/python-Stardew-Valley-Modding-API/releases/tag/PySMAPI) |
+
+# Socials
+
+|social|link|
+|------|----|
+|discord|https://discord.gg/Dup6vN6uM2|
