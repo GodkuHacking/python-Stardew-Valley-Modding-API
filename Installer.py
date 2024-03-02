@@ -2,6 +2,7 @@ import os
 import subprocess
 from colorama import init, Fore
 from tqdm import tqdm
+from pypresence import Presence
 
 # Initialize colorama for colored text
 init()
@@ -48,11 +49,25 @@ def run_installer(installer_exe_path):
     except subprocess.CalledProcessError:
         print_error("Oops! The SMAPI installer encountered an error. Please check the logs for details.")
 
+def update_discord_status():
+    """Update Discord Rich Presence status"""
+    RPC = Presence("1212902267762778132")  # Replace with your Discord application client ID
+    RPC.connect()
+    RPC.update(
+        state="Running PySMAPI",  # State text
+        details="Installing SMAPI",  # Details text
+        large_image="logo",  # Name of the large image asset uploaded to your Discord application
+        large_text="PySMAPI",  # Tooltip for the large image
+    )
+
 def main():
     print_menu()
     print(Fore.MAGENTA + SMAPi_ASCII)
     print(Fore.MAGENTA + "Initializing SMAPI installation...")
     
+    # Update Discord Rich Presence status
+    update_discord_status()
+
     # Prompt user to press Enter to continue
     input("Press Enter to begin the installation...")
 
@@ -73,6 +88,7 @@ def main():
         return
 
     run_installer(installer_exe_path)
+
 
 if __name__ == "__main__":
     try:
