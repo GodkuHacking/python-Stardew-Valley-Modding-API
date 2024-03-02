@@ -7,3 +7,12 @@ python Stardew Valley Modding API!
 > please star the repo 🙏
 > 
 > V1.0.1 coming soon!
+
+
+
+### Changelogs
+# Changelog
+
+| Version | Changes |
+| ------- | ------- |
+| v1.0.0  | ✨ Compiled the exe [PySMAPI](https://github.com/mindsetpro/python-Stardew-Valley-Modding-API/releases/tag/PySMAPI) |
