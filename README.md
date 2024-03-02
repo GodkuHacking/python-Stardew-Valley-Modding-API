@@ -20,4 +20,4 @@ python Stardew Valley Modding API!
 
 |social|link|
 |------|----|
-|discord|https://discord.gg/Dup6vN6uM2|
+|discord|[StardewCord](https://discord.gg/Dup6vN6uM2)|
